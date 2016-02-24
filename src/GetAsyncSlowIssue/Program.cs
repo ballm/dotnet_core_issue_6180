@@ -10,16 +10,15 @@ namespace GetAsyncSlowIssue
     {
         public static void Main(string[] args)
         {
-            var testClass = new TestHttpClient();
             var totalDuration = new TimeSpan();
             var numTests = 10;
 
             // ignore first run due to 'initialisation' making it slower
-            var temp = Task.Run(() => testClass.Test()).Result;
+            var temp = Task.Run(() => Test()).Result;
             
             for (var index = 0; index < numTests; index++)
             {
-                var duration = Task.Run(() => testClass.Test()).Result;
+                var duration = Task.Run(() => Test()).Result;
                 
                 Console.WriteLine("{0}: {1} ms", index, duration.TotalMilliseconds);
 
@@ -32,11 +31,8 @@ namespace GetAsyncSlowIssue
 
             Console.ReadLine();
         }
-    }
 
-    internal class TestHttpClient
-    {
-        public async Task<TimeSpan> Test()
+        private static async Task<TimeSpan> Test()
         {
             using (var httpClient = new HttpClient())
             {
@@ -53,4 +49,5 @@ namespace GetAsyncSlowIssue
             }
         }
     }
+
 }
