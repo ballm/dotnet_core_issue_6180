@@ -38,17 +38,19 @@ namespace GetAsyncSlowIssue
     {
         public async Task<TimeSpan> Test()
         {
-            var httpClient = new HttpClient();
-            httpClient.DefaultRequestHeaders.UserAgent.Add(new ProductInfoHeaderValue("test", "v1"));
-            var uri = new Uri("https://api.github.com/repos/dotnet/corefx/issues");
+            using (var httpClient = new HttpClient())
+            {
+                httpClient.DefaultRequestHeaders.UserAgent.Add(new ProductInfoHeaderValue("test", "v1"));
+                var uri = new Uri("https://api.github.com/repos/dotnet/corefx/issues");
 
-            var startTime = DateTime.Now;
+                var startTime = DateTime.Now;
 
-            await httpClient.GetAsync(uri);
+                await httpClient.GetAsync(uri);
 
-            var endTime = DateTime.Now;
+                var endTime = DateTime.Now;
 
-            return endTime.Subtract(startTime);
+                return endTime.Subtract(startTime);
+            }
         }
     }
 }
